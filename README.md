@@ -1,10 +1,16 @@
-# Prisma + tRPC
+# SaaS starter kit
+*Forked from https://github.com/trpc/examples-next-prisma-starter*
 
 ## Features
 
 - 🧙‍♂️ E2E typesafety with [tRPC](https://trpc.io)
 - ⚡ Full-stack React with Next.js
 - ⚡ Database with Prisma
+  - 💿 PostgreSQL and MongoDB starter schemas
+  - 🏘 Multi-tenancy arch
+- 🔐 Auth with next-auth
+- 💅 MUI integration
+- 🔔 Notifications via notistack
 - ⚙️ VSCode extensions
 - 🎨 ESLint + Prettier
 - 💚 CI setup using GitHub Actions:
@@ -17,8 +23,8 @@
 **yarn:**
 
 ```bash
-yarn create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
-cd trpc-prisma-starter
+yarn create next-app --example https://github.com/lucafaggianelli/saas-starter my-new-saas
+cd my-new-saas
 yarn
 yarn dx
 ```
@@ -26,8 +32,8 @@ yarn dx
 **npm:**
 
 ```bash
-npx create-next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
-cd trpc-prisma-starter
+npx create-next-app https://github.com/lucafaggianelli/saas-starter my-new-saas
+cd my-new-saas
 yarn
 yarn dx
 ```
@@ -42,8 +48,8 @@ yarn dx
 ### Start project
 
 ```bash
-yarn create next-app --example https://github.com/trpc/trpc --example-path examples/next-prisma-starter trpc-prisma-starter
-cd trpc-prisma-starter
+yarn create next-app https://github.com/lucafaggianelli/saas-starter my-new-saas
+cd my-new-saas
 yarn
 yarn dx
 ```
@@ -81,11 +87,23 @@ Go to [dashboard.render.com/blueprints](https://dashboard.render.com/blueprints)
   <tbody>
     <tr>
       <td><a href="./prisma/schema.prisma"><code>./prisma/schema.prisma</code></a></td>
-      <td>Prisma schema</td>
+      <td>Prisma schema (PostgreSQL)</td>
+    </tr>
+    <tr>
+      <td><a href="./prisma/schema.prisma"><code>./prisma/schema.mongo.prisma</code></a></td>
+      <td>Prisma schema (MongoDB)</td>
     </tr>
     <tr>
       <td><a href="./src/pages/api/trpc/[trpc].ts"><code>./src/pages/api/trpc/[trpc].ts</code></a></td>
       <td>tRPC response handler</td>
+    </tr>
+    <tr>
+      <td><a href="./src/pages/api/auth/[...nextauth].ts"><code>./src/pages/api/auth/[...nextauth].ts</code></a></td>
+      <td>next-auth response handler and config</td>
+    </tr>
+    <tr>
+      <td><a href="./src/middleware.js"><code>./src/middleware.js</code></a></td>
+      <td>next-auth access control</td>
     </tr>
     <tr>
       <td><a href="./src/server/routers"><code>./src/server/routers</code></a></td>

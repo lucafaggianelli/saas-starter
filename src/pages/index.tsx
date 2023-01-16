@@ -7,7 +7,7 @@ import type { AppRouter } from '~/server/routers/_app';
 
 const IndexPage: NextPageWithLayout = () => {
   const utils = trpc.useContext();
-  const postsQuery = trpc.post.list.useInfiniteQuery(
+  const postsQuery = trpc.project.list.useInfiniteQuery(
     {
       limit: 5,
     },
@@ -18,10 +18,10 @@ const IndexPage: NextPageWithLayout = () => {
     },
   );
 
-  const addPost = trpc.post.add.useMutation({
+  const addPost = trpc.project.add.useMutation({
     async onSuccess() {
       // refetches posts after a post is added
-      await utils.post.list.invalidate();
+      await utils.project.list.invalidate();
     },
   });
 
@@ -68,7 +68,7 @@ const IndexPage: NextPageWithLayout = () => {
         <Fragment key={page.items[0]?.id || index}>
           {page.items.map((item) => (
             <article key={item.id}>
-              <h3>{item.title}</h3>
+              <h3>{item.name}</h3>
               <Link href={`/post/${item.id}`}>View more</Link>
             </article>
           ))}
@@ -90,11 +90,11 @@ const IndexPage: NextPageWithLayout = () => {
           e.preventDefault();
           const $form = e.currentTarget;
           const values = Object.fromEntries(new FormData($form));
-          type Input = inferProcedureInput<AppRouter['post']['add']>;
+          type Input = inferProcedureInput<AppRouter['project']['add']>;
           //    ^?
           const input: Input = {
-            title: values.title as string,
-            text: values.text as string,
+            name: values.text as string,
+            organizationId: 1,
           };
           try {
             await addPost.mutateAsync(input);

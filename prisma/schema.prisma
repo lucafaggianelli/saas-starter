@@ -108,8 +108,8 @@ model Project {
 
   name  String
 
-  organization Organization @relation(fields: [orgenizationId], references: [id])
-  orgenizationId Int
+  organization Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
 
   // To return `Date`s intact through the API we use transformers
   // https://trpc.io/docs/data-transformers

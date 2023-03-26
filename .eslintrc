@@ -17,16 +17,9 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "semi": ["error", "never"]
   },
-  // "overrides": [
-  //   {
-  //     "files": [],
-  //     "rules": {
-  // "@typescript-eslint/no-unused-vars": "off"
-  //     }
-  //   }
-  // ],
   "settings": {
     "react": {
       "version": "detect"

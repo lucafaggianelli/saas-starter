@@ -77,9 +77,9 @@ enum TokenType {
 model Organization {
   id Int @id @default(autoincrement())
 
-  name       String
-  membership Membership[]
-  projects   Project[]
+  name        String
+  memberships Membership[]
+  projects    Project[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

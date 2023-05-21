@@ -1,11 +1,13 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { GlobalRole } from '@prisma/client'
+import { GlobalRole, MembershipRole } from '@prisma/client'
 import NextAuth, { AuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import getConfig from 'next/config'
 
 import { prisma } from '~/server/prisma'
+
+const ACCEPTS_INVITATIONS_ONLY = false
 
 /**
  * Check if the user has been invited
@@ -86,6 +88,10 @@ export const authOptions: AuthOptions = {
         return false
       }
 
+      if (!ACCEPTS_INVITATIONS_ONLY) {
+        return true
+      }
+
       const invitations = await getUserInvitations(email)
       const isInvited = invitations[0].some((inv) => !!inv) || !!invitations[1]
 
@@ -110,8 +116,8 @@ export const authOptions: AuthOptions = {
         },
       })
 
-      // Has been invited as admin
       if (invitations[1]) {
+        // Has been invited as admin
         await prisma.$transaction([
           // Update user role
           prisma.user.update({
@@ -130,6 +136,7 @@ export const authOptions: AuthOptions = {
 
         user.role = GlobalRole.SUPERADMIN
       } else if (hasOrgInvitations) {
+        // Has been invited as normal user
         const transactions = invitations[0].map((membership) => {
           return prisma.membership.update({
             where: {
@@ -147,6 +154,24 @@ export const authOptions: AuthOptions = {
         })
 
         user.memberships = await prisma.$transaction(transactions)
+      } else if (!ACCEPTS_INVITATIONS_ONLY) {
+        // The user didn't sign up, so let's create a new org for her
+        const membership = await prisma.membership.create({
+          data: {
+            organization: {
+              create: {
+                name: 'My org',
+              },
+            },
+            role: MembershipRole.ADMIN,
+            userId: user.id, // TODO: TS problem here
+          },
+          include: {
+            organization: true,
+          },
+        })
+
+        user.memberships = [membership]
       }
 
       session.user.role = user.role
